@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-// import { ReactComponent as SeperatorDesktop } from '../public/pattern-divider-desktop.svg';
 import axios from 'axios';
 function App() {
+  // set states, store window size and api data
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [posts, setPosts] = useState([]);
 
+  // Function with api call using Axios
   const getData = async () => {
     await axios
       .get('https://api.adviceslip.com/advice')
@@ -15,17 +16,18 @@ function App() {
       })
   }
 
+  // Built-in React hook useEffect to run getData function and have size of window on mount
   useEffect(() => {
     getData();
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
-
     window.addEventListener('resize', handleWindowResize);
 
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     };
+
   }, []);
 
   function getWindowSize() {
@@ -35,7 +37,7 @@ function App() {
 
   return (
     <div className='container h-screen flex items-center justify-center'>
-      <div className="card w-auto shadow-xl image-full">
+      <div className="card w-auto shadow-xl image-full m-10">
         <div className="card-body max-w-lg gap-6 items-center">
           <h2 className="card-title text-sm">ADVICE #{posts.id}</h2>
           <p className="font-extrabold text-xl text-center">"{posts.advice}"</p>
